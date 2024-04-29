@@ -25,7 +25,7 @@ const App = () => {
   useEffect(() => {
     const fetchWorkflowItemCount = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/items/count');
+        const response = await fetch('https://7bip10ir4c.execute-api.us-east-1.amazonaws.com/Count');
         const count = await response.json();
         setWorkflowItemCount(count);
       } catch (error) {

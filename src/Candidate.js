@@ -128,26 +128,43 @@ const Candidate = () => {
   };
 
   const handleViewDocument = async (docId) => {
-    try {
-      setLoading(true); // Start showing spinner mask
-      console.log(docId);
-      const response = await fetch(`http://localhost:8080/api/items/getCanData/${docId}`);
-      const formDataJson = await response.json();
-      console.log(formDataJson.type) ; 
-      console.log(formDataJson);
+      try {
+        setLoading(true);
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: docId }),
+        };
+    
+        const response = await fetch(
+          'https://f75zwhtiob.execute-api.us-east-1.amazonaws.com/CanView',
+          requestOptions
+        );
+    
+        if (!response.ok) {
+          throw new Error('Failed to retrieve item data');
+        }
+    
+        const formDataJson = await response.json();
+        const formDataJson2 = JSON.parse(formDataJson);
+        console.log('formDataJson:', formDataJson2); // Log the formDataJson object
+        console.log('id:', formDataJson2.id); // Log the formDataJson object
+        console.log('status:', formDataJson2.status); // Log the formDataJson object
+      
       setFormData({
-        id: formDataJson.id,
-        title: formDataJson.title,
-        engineer: formDataJson.engineer,
-        type: formDataJson.type,
-        service: formDataJson.service,
-        sme: formDataJson.sme,
-        language: formDataJson.language,
-        url: formDataJson.url,
-        status: formDataJson.status,
-        summary: formDataJson.summary,
+        id: formDataJson2.id,
+        title: formDataJson2.title,
+        engineer: formDataJson2.engineer,
+        type: formDataJson2.type,
+        service: formDataJson2.service,
+        sme: formDataJson2.sme,
+        language: formDataJson2.language,
+        url: formDataJson2.url,
+        status: formDataJson2.status,
+        summary: formDataJson2.summary,
       });
-
 
   
       setSelectedDocumentId(docId);
@@ -162,8 +179,8 @@ const Candidate = () => {
   const handleResearch = async () => {
     const fid = document.getElementById('id').value;
     try {
-      const response = await fetch('http://localhost:8080/api/items/update', {
-        method: 'Put',
+      const response = await fetch('https://ztzizvx246.execute-api.us-east-1.amazonaws.com/Status', {
+        method: 'Post',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -192,14 +209,14 @@ const Candidate = () => {
   const handleProgress = async () => {
     const fid = document.getElementById('id').value;
       try {
-        const response = await fetch('http://localhost:8080/api/items/progress', {
-          method: 'PUT',
+        const response = await fetch('https://ztzizvx246.execute-api.us-east-1.amazonaws.com/Status', {
+          method: 'Post',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             id: fid,
-            status: 'Progress',
+            status: 'InProgress',
           }),
         });
 
@@ -218,6 +235,36 @@ const Candidate = () => {
         console.error('Error approving item:', error);
       }
     };
+
+    const handleDone = async () => {
+      const fid = document.getElementById('id').value;
+        try {
+          const response = await fetch('https://ztzizvx246.execute-api.us-east-1.amazonaws.com/Status', {
+            method: 'Post',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: fid,
+              status: 'Done',
+            }),
+          });
+  
+          if (response.ok) {
+            const responseData = await response.text();
+            setServerResponse(responseData);
+            console.log('item put into Research');
+            fetchData();
+          } else {
+            const errorText = await response.text();
+            setServerResponse('Approval failed: ' + response.status + ' - ' + errorText);
+            console.error('Approval failed:', response.status, errorText);
+          }
+        } catch (error) {
+          setServerResponse('Error approving item: ' + error.message);
+          console.error('Error approving item:', error);
+        }
+      };
 
   return (
     <div>
@@ -394,7 +441,7 @@ const Candidate = () => {
               </form>
               <button onClick={handleResearch}>Research</button>
               <button onClick={handleProgress}>In-Progress</button>
-              <button onClick={handleResearch}>Done</button>
+              <button onClick={handleDone}>Done</button>
               <div>{serverResponse}</div> {/* Display server response here */}
             </div>
           )}
