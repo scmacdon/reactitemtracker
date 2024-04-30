@@ -11,7 +11,39 @@ import Link from "@cloudscape-design/components/link";
 import './styles.css';
 
 const PageCards = () => {
-  const [selectedItems, setSelectedItems] = React.useState([{ name: "Item 2" }]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://azxj9jtfhl.execute-api.us-east-1.amazonaws.com/Done');
+      if (response.ok) {
+        const responseDataString = await response.json();
+        const match = responseDataString.match(/\[(.*?)\]/s); // Updated regex to include [ and ] characters
+        if (!match || match.length < 1) {
+          throw new Error('Failed to extract JSON data from response');
+        }
+        const jsonString = match[0]; // Use the entire match as JSON string
+        console.log("Extracted JSON string:", jsonString);
+        const cleanedJsonString = jsonString.replace(/\\/g, ''); // Remove escape characters
+        console.log("Cleaned JSON string:", cleanedJsonString);
+        
+        const cleanedData = JSON.parse(cleanedJsonString);
+        setItems(cleanedData);
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Cards
@@ -26,57 +58,35 @@ const PageCards = () => {
       cardDefinition={{
         header: item => (
           <Link href="#" fontSize="heading-m">
-            {item.name}
+            {item.Eng}
           </Link>
         ),
         sections: [
           {
             id: "description",
             header: "Description",
-            content: item => item.description
+            content: item => item.Description
           },
           {
-            id: "type",
-            header: "Type",
-            content: item => item.type
+            id: "scouts",
+            header: "Scouts",
+            content: item => `${item.Scout} scouts`
           },
           {
-            id: "size",
-            header: "Size",
-            content: item => item.size
+            id: "follows",
+            header: "Follows",
+            content: item => `${item.Follow} follows`
           }
         ]
       }}
       cardsPerRow={[
         { cards: 3 }
       ]}
-      items={[
-        {
-          name: "Scott Macdonald",
-          alt: "First",
-          description: "Scott Macdonald Goals as of 4/30/2024",
-          type: "3 scouts",
-          size: "2 follows"
-        },
-        {
-            name: "Jason Quesenberry",
-            alt: "First",
-            description: "Jason Quesenberry Goals as of 4/30/2024",
-            type: "1 scouts",
-            size: "4 follows"
-        },
-        {
-          name: "Steve Meyer",
-          alt: "Third",
-          description: "Steve Meyer Goals as of 4/30/2024",
-          type: "1 scouts",
-          size: "4 follows"
-        }
-      ]}
+      items={items}
       loadingText="Loading resources"
       selectionType="multi"
-      trackBy="name"
-      visibleSections={["description", "type", "size"]}
+      trackBy="Eng"
+      visibleSections={["description", "scouts", "follows"]}
       empty={
         <Box
           margin={{ vertical: "xs" }}
@@ -96,8 +106,8 @@ const PageCards = () => {
         <Header
           counter={
             selectedItems?.length
-              ? "(" + selectedItems.length + "/7)"
-              : "(10)"
+              ? `(${selectedItems.length}/${items.length})`
+              : `(${items.length})`
           }
         >
           Completed Getting Started Items
@@ -115,8 +125,8 @@ const PageCards = () => {
             pageSize: 6,
             visibleContent: [
               "description",
-              "type",
-              "size"
+              "scouts",
+              "follows"
             ]
           }}
           pageSizePreference={{
@@ -136,8 +146,8 @@ const PageCards = () => {
                     id: "description",
                     label: "Description"
                   },
-                  { id: "type", label: "Type" },
-                  { id: "size", label: "Size" }
+                  { id: "scouts", label: "Scouts" },
+                  { id: "follows", label: "Follows" }
                 ]
               }
             ]
@@ -149,4 +159,3 @@ const PageCards = () => {
 }
 
 export default PageCards;
-
