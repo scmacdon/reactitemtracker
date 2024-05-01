@@ -153,7 +153,7 @@ const DraftComponent = () => {
         service: formDataJson2.service,
         sme: formDataJson2.sme,
         language: formDataJson2.language,
-        title: formDataJson2.title,
+        url: formDataJson2.url,
         summary: formDataJson2.summary,
         engineer: formDataJson2.engineer,
         guide: formDataJson2.guide,
@@ -316,13 +316,13 @@ const DraftComponent = () => {
               value={formData.id}
               className="input-field"
             /><br />
-            <label htmlFor='title' className="label">Title:</label>
+            <label htmlFor='url' className="label">Reseach Doc URL:</label>
             <input
               type='text'
-              id='title'
-              name='title'
+              id='url'
+              name='url'
               readOnly
-              value={formData.title}
+              value={formData.url}
               className="input-field"
             /><br />
              <label htmlFor='summary' className="label">Summary:</label>
