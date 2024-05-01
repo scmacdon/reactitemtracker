@@ -97,7 +97,7 @@ const PageResearch = () => {
       <p>
         An SDK getting started scenario uses a single AWS service (or part of a service) to show new AWS developers how to get up and running using the SDK and the service.
 
-        The rubric can be applied to any Getting Started item that is in <b>Draft</b> state. If the item is not
+        The rubric can be applied to any Getting Started <b>Draft</b> item. If the item is not
         in this state, you cannot run a rubric on it. 
         The Getting Started item also meets the following go/no-go criteria:
       </p>
