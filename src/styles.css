@@ -272,3 +272,60 @@ th {
     transform: rotate(360deg);
   }
 }
+
+.custom-card {
+  background-color: #dbd3d3; /* Light grey background */
+  border: 1px solid #3b3a3a;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+  width: calc(33.33% - 20px); /* Adjust card width as needed */
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 300px; /* Fixed height for all cards */
+  overflow: hidden; /* Hide overflow content */
+}
+
+.custom-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card .card-header {
+  margin-bottom: 10px;
+}
+
+.custom-card .card-header h3 {
+  margin: 0;
+  color: #007bff; /* Blue color for name */
+}
+
+.custom-card .card-body {
+  height: calc(100% - 40px); /* Subtract header height and padding */
+  overflow-y: auto; /* Add scrollbar for overflow content */
+}
+
+.custom-card .card-body p {
+  margin: 0;
+  color: #333; /* Dark grey color for other text */
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #eaeaea;
+  padding: 10px;
+}
+
+.custom-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: left;
+}

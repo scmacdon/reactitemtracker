@@ -54,7 +54,7 @@ const App = () => {
           { type: "divider" },
           {
             type: "link",
-            text: `All Getting Started items (${workflowItemCount})`, href: "#/PageCards"
+            text: `View Closed Getting Started (${workflowItemCount})`, href: "#/PageCards"
             
           },
         ]}
