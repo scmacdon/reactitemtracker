@@ -7,6 +7,7 @@ const Follow = () => {
   const [formErrors, setFormErrors] = useState({ itemId: '' });
   const [isUpdating, setIsUpdating] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [isCreatingFollow, setIsCreatingFollow] = useState(false); // New state for tracking follow creation
 
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -19,52 +20,14 @@ const Follow = () => {
 
   const handleGetItem = async (e) => {
     e.preventDefault();
-
-   
     const itemIdFromInput = itemId.trim();
-   
-    // if (!itemId) {
-   //   setFormErrors({
-   //     itemId: 'Please enter an ID',
-   //   });
-   //   return;
-   // }
-
     try {
       setIsFetching(true);
-
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: itemId }),
-      };
-
       const response = await fetch(`http://localhost:8080/api/items/${itemIdFromInput}`);
-
-    
-     //    const response = await fetch(
-  //      'https://j1rij6x39h.execute-api.us-east-1.amazonaws.com/SingleItem',
-    //    requestOptions
-   //   );
-
-
       if (!response.ok) {
         throw new Error('Failed to retrieve item data');
       }
-
       const responseDataString = await response.json();
-    /*
-      const match = responseDataString.match(/\[([^[\]]+)\]/);
-      if (!match || match.length < 2) {
-        throw new Error('Failed to extract JSON data from response');
-      }
-      const jsonString = match[1];
-      const cleanedJsonString = jsonString.replace(/\\/g, '');
-      const cleanedData = JSON.parse(cleanedJsonString);
-      */
-     
       setItemData(responseDataString);
     } catch (error) {
       console.error('Error retrieving item data:', error.message);
@@ -77,8 +40,6 @@ const Follow = () => {
     e.preventDefault();
     try {
       setIsUpdating(true);
-
-      // Filter out SOS field before sending data to the server
       const { SOS, ...dataToSend } = itemData;
       const requestOptions = {
         method: 'POST',
@@ -87,12 +48,10 @@ const Follow = () => {
         },
         body: JSON.stringify(dataToSend),
       };
-
       const response = await fetch(
         'https://tvo3zd1on3.execute-api.us-east-1.amazonaws.com/updateitem',
         requestOptions
       );
-
       if (response.ok) {
         const successText = await response.text();
         alert(successText);
@@ -106,12 +65,10 @@ const Follow = () => {
     }
   };
 
-  // Handler for "Create Follow" button click
   const handleCreateFollow = async (e) => {
     e.preventDefault();
     try {
-      setIsUpdating(true);
-
+      setIsCreatingFollow(true); // Start the loading indicator
       const { sos, status, ...dataToSend } = itemData;
       const requestOptions = {
         method: 'POST',
@@ -120,46 +77,34 @@ const Follow = () => {
         },
         body: JSON.stringify(dataToSend),
       };
-
-      
       const response = await fetch(
         'https://4zzkjzebl8.execute-api.us-east-1.amazonaws.com/Follow',
         requestOptions
       );
-      
-     // const response = await fetch(
-     //   'http://localhost:8080/api/items/follow',
-    //    requestOptions
-    //  );
-
       if (response.ok) {
         const successText = await response.text();
         alert(successText);
       } else {
-        throw new Error('Failed to update item data');
+        throw new Error('Failed to create follow');
       }
     } catch (error) {
-      console.error('Error updating item:', error.message);
+      console.error('Error creating follow:', error.message);
     } finally {
-      setIsUpdating(false);
+      setIsCreatingFollow(false); // Stop the loading indicator
     }
   };
 
   return (
     <div>
       <h1>Create a Getting Started Follow</h1>
-      <p>You can create a follow item by entering the id value of the item you want to base a follow on. 
-        Modify the Engineer and programming langauge fields and click <b>Create Follow</b>. Other details should remain the same.  
-        A new item that represents a follow is created. </p>
-      <p>You cannot create a follow based on a <b>Draft</b> item. A follow is put automatically into <b>Research</b> status 
-      and has the same score as the Scout item.</p>  
+      <p>You can create a follow item by entering the id value of the item you want to base a follow on. Modify the Engineer and programming language fields and click <b>Create Follow</b>. Other details should remain the same. A new item that represents a follow is created.</p>
+      <p>You cannot create a follow based on a <b>Draft</b> item. A follow is put automatically into <b>Research</b> status and has the same score as the Scout item.</p>
       <form>
         <div>
           <label htmlFor="itemId">Enter Item ID:</label>
           <input type="text" id="itemId" name="itemId" value={itemId} onChange={handleInputChange} />
           <span className="error-message">{formErrors.itemId}</span>
         </div>
-
         <div>
           <button type="button" onClick={handleGetItem} disabled={isFetching}>
             {isFetching ? 'Fetching Data...' : 'Get Follow Data'}
@@ -187,7 +132,9 @@ const Follow = () => {
               </div>
             ))}
           <div>
-              <button type="button" onClick={handleCreateFollow}>Create Follow</button>
+            <button type="button" onClick={handleCreateFollow} disabled={isCreatingFollow}>
+              {isCreatingFollow ? 'Creating Follow...' : 'Create Follow'}
+            </button>
           </div>
         </form>
       )}
@@ -196,6 +143,3 @@ const Follow = () => {
 };
 
 export default Follow;
-
-
-
