@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 
 const CustomCard = ({ item, onClick }) => {
@@ -29,6 +29,8 @@ const PageCards = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true); // Set loading to true when fetching data
+
       const response = await fetch('https://azxj9jtfhl.execute-api.us-east-1.amazonaws.com/Done');
       if (response.ok) {
         const responseDataString = await response.json();
@@ -47,12 +49,14 @@ const PageCards = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading to false when data fetching is complete
     }
   };
 
   const handleName = async (name) => {
     try {
+      setLoading(true); // Set loading to true when fetching data
+
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -82,6 +86,8 @@ const PageCards = () => {
       setTableItems(cleanedData); // Update the table data only
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false); // Set loading to false when data fetching is complete
     }
   };
 
@@ -98,7 +104,12 @@ const PageCards = () => {
   );
 
   return (
-    <>
+    <div className="page-container">
+      {loading && (
+        <div className="loading-mask">
+          <FontAwesomeIcon icon={faSpinner} className="spinner" spin />
+        </div>
+      )}
       <h3>Getting Started Done Items Information</h3>
       <p>Click on the name in the Card to get details about the Getting Started items in <b>Done</b> state</p> 
       <div className="cards-container">
@@ -124,8 +135,9 @@ const PageCards = () => {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 
 export default PageCards;
+
