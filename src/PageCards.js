@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import Cards from "@cloudscape-design/components/cards";
-import Box from "@cloudscape-design/components/box";
-import SpaceBetween from "@cloudscape-design/components/space-between";
-import Button from "@cloudscape-design/components/button";
-import TextFilter from "@cloudscape-design/components/text-filter";
-import Header from "@cloudscape-design/components/header";
-import Pagination from "@cloudscape-design/components/pagination";
-import CollectionPreferences from "@cloudscape-design/components/collection-preferences";
-import Link from "@cloudscape-design/components/link";
+import React, { useState, useEffect, useMemo } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 
+const CustomCard = ({ item, onClick }) => {
+  return (
+    <div className="custom-card" onClick={() => onClick(item.Eng)}>
+      <div className="card-header">
+        <h3>{item.Eng}</h3>
+      </div>
+      <div className="card-body">
+        <p>{item.Description}</p>
+        <p>{`${item.Scout} scouts`}</p>
+        <p>{`${item.Follow} follows`}</p>
+      </div>
+    </div>
+  );
+};
+
 const PageCards = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [items, setItems] = useState([]);
+  const [cardItems, setCardItems] = useState([]);
+  const [tableItems, setTableItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,19 +32,17 @@ const PageCards = () => {
       const response = await fetch('https://azxj9jtfhl.execute-api.us-east-1.amazonaws.com/Done');
       if (response.ok) {
         const responseDataString = await response.json();
-        const match = responseDataString.match(/\[(.*?)\]/s); // Updated regex to include [ and ] characters
+        const match = responseDataString.match(/\[(.*?)\]/s);
         if (!match || match.length < 1) {
           throw new Error('Failed to extract JSON data from response');
         }
-        const jsonString = match[0]; // Use the entire match as JSON string
-        console.log("Extracted JSON string:", jsonString);
-        const cleanedJsonString = jsonString.replace(/\\/g, ''); // Remove escape characters
-        console.log("Cleaned JSON string:", cleanedJsonString);
-        
+        const jsonString = match[0];
+        const cleanedJsonString = jsonString.replace(/\\/g, '');
         const cleanedData = JSON.parse(cleanedJsonString);
-        setItems(cleanedData);
+        setCardItems(cleanedData); // Set card data
+        setTableItems(cleanedData); // Set table data
       } else {
-        console.error('Failed to fetch data');
+        throw new Error('Failed to fetch data');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -45,117 +51,81 @@ const PageCards = () => {
     }
   };
 
-  return (
-    <Cards
-      onSelectionChange={({ detail }) =>
-        setSelectedItems(detail?.selectedItems ?? [])
+  const handleName = async (name) => {
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ eng: name }), // Send 'eng' instead of 'name'
+      };
+
+      const response = await fetch(
+        'https://5n85fbn863.execute-api.us-east-1.amazonaws.com/Complete',
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to retrieve item data');
       }
-      selectedItems={selectedItems}
-      ariaLabels={{
-        itemSelectionLabel: (e, t) => `select ${t.name}`,
-        selectionGroupLabel: "Item selection"
-      }}
-      cardDefinition={{
-        header: item => (
-          <Link href="#" fontSize="heading-m">
-            {item.Eng}
-          </Link>
-        ),
-        sections: [
-          {
-            id: "description",
-            header: "Description",
-            content: item => item.Description
-          },
-          {
-            id: "scouts",
-            header: "Scouts",
-            content: item => `${item.Scout} scouts`
-          },
-          {
-            id: "follows",
-            header: "Follows",
-            content: item => `${item.Follow} follows`
-          }
-        ]
-      }}
-      cardsPerRow={[
-        { cards: 3 }
-      ]}
-      items={items}
-      loadingText="Loading resources"
-      selectionType="multi"
-      trackBy="Eng"
-      visibleSections={["description", "scouts", "follows"]}
-      empty={
-        <Box
-          margin={{ vertical: "xs" }}
-          textAlign="center"
-          color="inherit"
-        >
-          <SpaceBetween size="m">
-            <b>No resources</b>
-            <Button>Create resource</Button>
-          </SpaceBetween>
-        </Box>
+
+      const responseDataString = await response.text();
+      console.log("JSON "+responseDataString)
+      const match = responseDataString.match(/\[(.*?)\]/s);
+      if (!match || match.length < 1) {
+        throw new Error('Failed to extract JSON data from response');
       }
-      filter={
-        <TextFilter filteringPlaceholder="Find resources" />
-      }
-      header={
-        <Header
-          counter={
-            selectedItems?.length
-              ? `(${selectedItems.length}/${items.length})`
-              : `(${items.length})`
-          }
-        >
-          Completed Getting Started Items
-        </Header>
-      }
-      pagination={
-        <Pagination currentPageIndex={1} pagesCount={2} />
-      }
-      preferences={
-        <CollectionPreferences
-          title="Preferences"
-          confirmLabel="Confirm"
-          cancelLabel="Cancel"
-          preferences={{
-            pageSize: 6,
-            visibleContent: [
-              "description",
-              "scouts",
-              "follows"
-            ]
-          }}
-          pageSizePreference={{
-            title: "Page size",
-            options: [
-              { value: 6, label: "6 resources" },
-              { value: 12, label: "12 resources" }
-            ]
-          }}
-          visibleContentPreference={{
-            title: "Select visible content",
-            options: [
-              {
-                label: "Main distribution properties",
-                options: [
-                  {
-                    id: "description",
-                    label: "Description"
-                  },
-                  { id: "scouts", label: "Scouts" },
-                  { id: "follows", label: "Follows" }
-                ]
-              }
-            ]
-          }}
-        />
-      }
-    />
+      const jsonString = match[0];
+      const cleanedJsonString = jsonString.replace(/\\/g, '');
+      const cleanedData = JSON.parse(cleanedJsonString);
+      setTableItems(cleanedData); // Update the table data only
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const columns = useMemo(
+    () => [
+      { Header: 'Item Id', accessor: 'id' },
+      { Header: 'Status', accessor: 'status' },
+      { Header: 'Title', accessor: 'title' },
+      { Header: 'Engineer', accessor: 'engineer' },
+      { Header: 'Type', accessor: 'type' },
+      { Header: 'Service', accessor: 'service' },
+    ],
+    []
   );
-}
+
+  return (
+    <>
+      <h3>Getting Started Done Items Information</h3>
+      <p>Click on the name in the Card to get details about the Getting Started items in <b>Done</b> state</p> 
+      <div className="cards-container">
+        {cardItems.map((item, index) => (
+          <CustomCard key={index} item={item} onClick={handleName} />
+        ))}
+      </div>
+      <table className="custom-table">
+        <thead>
+          <tr>
+            {columns.map(column => (
+              <th key={column.accessor}>{column.Header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableItems.map((item, index) => (
+            <tr key={index}>
+              {columns.map(column => (
+                <td key={column.accessor}>{item[column.accessor]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+};
 
 export default PageCards;
