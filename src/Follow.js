@@ -5,6 +5,7 @@ const Follow = () => {
   const [itemData, setItemData] = useState({});
   const [formErrors, setFormErrors] = useState({ itemId: '' });
   const [isFetching, setIsFetching] = useState(false);
+  const [isCreatingFollow, setIsCreatingFollow] = useState(false); // Add state for creating follow
 
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -41,6 +42,8 @@ const Follow = () => {
   const handleCreateFollow = async (e) => {
     e.preventDefault();
     try {
+      setIsCreatingFollow(true); // Set creating follow state to true
+
       const { Engineer, Language, ...dataToSend } = itemData; // Only sending Engineer and Language
       const requestOptions = {
         method: 'POST',
@@ -60,6 +63,8 @@ const Follow = () => {
       }
     } catch (error) {
       console.error('Error updating item:', error.message);
+    } finally {
+      setIsCreatingFollow(false); // Reset creating follow state
     }
   };
 
@@ -98,7 +103,9 @@ const Follow = () => {
             </div>
           ))}
           <div>
-            <button type="submit">Create Follow</button>
+            <button type="submit" disabled={isCreatingFollow}> {/* Disable button during follow creation */}
+              {isCreatingFollow ? 'Creating Follow...' : 'Create Follow'} {/* Change button text based on loading state */}
+            </button>
           </div>
         </form>
       )}
@@ -107,4 +114,5 @@ const Follow = () => {
 };
 
 export default Follow;
+
 
