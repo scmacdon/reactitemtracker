@@ -236,7 +236,7 @@ const DraftComponent = () => {
       <div className="content">
         <h1 className="red-banner">Getting Started Draft Details</h1>
         <p className="description">
-          At this stage, only Getting Started items with the status of <b>Draft</b> are displayed and can be either accepted or rejected.
+          Getting Started items with the status of <b>Draft</b> are displayed and can be either accepted or rejected.
         </p>
         <p className="description">
           The Getting Started team is responsible for discussing Getting Started items and granting approval for further progression.
