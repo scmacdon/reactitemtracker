@@ -12,8 +12,8 @@ const PageDoc = () => {
       <p>The steps outlined below detail the process for creating a Getting Started scenario.</p>
       <p>
         1. Pull the next service off the roadmap <a href="https://quip-amazon.com/xItSADd94kkn/Code-Examples-Roadmap-WIP#temp:C:BAQ58cc647b947148ea8f4277e00" target="_blank" rel="noopener noreferrer">
-          Code Examples Roadmap.
-        </a>
+          Code Examples Roadmap</a>. The managers are responsible to updating this document and providing a clear roadmap of AWS Services. 
+        
       </p>
       <p>
         2. Determine a subject matter expert (sme) for the Getting Started scenario example. You can use this tool <a href="https://prod.virtualsmiley.docs.aws.a2z.com/#/services" target="_blank" rel="noopener noreferrer">
