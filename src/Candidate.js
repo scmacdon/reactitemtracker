@@ -286,7 +286,7 @@ const Candidate = () => {
       you can do most of the development work, such as creating a the code in given programming language, writing the 
       general Readme and the Eng spec (if the item is a Scout).</p>
       <p>In addition, write the tests for the code, linter the code, 
-      hook the item into SOS, and build a cloud desktop build. If you are implementing a Follow item, use Ailly to convert the example from the 
+      hook the item into SOS, and build a cloud desktop build. If you are implementing a Follow item, use AI (ie, Ailly) to convert the example from the 
       Scout Language to the Follow langauge 
       </p>
       <button onClick={fetchData} disabled={fetchingData}>
