@@ -48,12 +48,12 @@ const App = () => {
           { type: "link", text: "Enter Rubric information", href: "#/PageResearch" },
           { type: "link", text: "Update Item", href: "#/pageUpdate" },
           { type: "link", text: "Create a Follow", href: "#/Follow" },
-          { type: "link", text: "View Getting Started Drafts", href: "#/DraftComponent" },
-          { type: "link", text: "View Getting Started Candidates", href: "#/Candidate" },
+          { type: "link", text: "View Research Phase items", href: "#/DraftComponent" },
+          { type: "link", text: "View Development Phase items", href: "#/Candidate" },
           { type: "divider" },
           {
             type: "link",
-            text: `View Closed Getting Started (${workflowItemCount})`, href: "#/PageCards"
+            text: `View Completed items (${workflowItemCount})`, href: "#/PageCards"
             
           },
         ]}
