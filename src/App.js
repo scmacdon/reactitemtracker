@@ -50,7 +50,6 @@ const App = () => {
           { type: "link", text: "Create a Follow", href: "#/Follow" },
           { type: "link", text: "View Getting Started Drafts", href: "#/DraftComponent" },
           { type: "link", text: "View Getting Started Candidates", href: "#/Candidate" },
-          { type: "link", text: "Visual instructions", href: "#/page4" },
           { type: "divider" },
           {
             type: "link",
