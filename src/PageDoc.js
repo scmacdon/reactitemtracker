@@ -5,18 +5,18 @@ const PageDoc = () => {
     <div>
       <h1>Getting Started Scenario Process</h1>
       <h5>This application tracks Getting Started Scenario items through these states: Draft, Approved, Research, InProgress, and Done. 
-        A Getting Started scenario is defined here: <a href="https://quip-amazon.com/FhZaAaKOSAIf/AWS-Getting-Started-Scenarios-Guidelines" target="_blank" rel="noopener noreferrer">
+        Getting Started scenario guidelines and the development process are defined here: <a href="https://quip-amazon.com/FhZaAaKOSAIf/AWS-Getting-Started-Scenarios-Guidelines" target="_blank" rel="noopener noreferrer">
         Guidelines for SDK  Getting Started scenarios.</a></h5>
       
 
-      <p>This tool tracks a getting started scenario through the different devlopment phases:</p>
+      <p>This tool tracks a getting started scenario through the different dev phases:</p>
       <ul>
-        <li>Getting Started Research  Phase</li>
+        <li>Getting Started Research Phase</li>
         <li>Development Phase</li>
         <li>Publication phase</li>
       </ul>
-      <p>The full details about each phase is located in above quip. The following sections are simply an overview of each phase and 
-        how to use this app for the corresponding phase.</p>
+      <p>The full details about each phase is located in the above quip. 
+        The following sections are simply an overview of each phase and how to use this app during each phase.</p>
       
       <h3>Research  Phase</h3>
       <p>Enter the Getting Started details in the <i>Enter Getting Started Details</i> section of this application. 
