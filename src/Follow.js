@@ -24,7 +24,34 @@ const Follow = () => {
     try {
       setIsFetching(true);
 
-      const response = await fetch(`http://localhost:8080/api/items/${itemIdFromInput}`);
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: itemId }),
+      };
+
+      const response = await fetch(
+        'https://j1rij6x39h.execute-api.us-east-1.amazonaws.com/SingleItem',
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to retrieve item data');
+      }
+
+      const responseDataString1 = await response.json();
+    
+      const match = responseDataString1.match(/\[([^[\]]+)\]/);
+      if (!match || match.length < 2) {
+        throw new Error('Failed to extract JSON data from response');
+      }
+      const jsonString = match[1];
+      const cleanedJsonString = jsonString.replace(/\\/g, '');
+      const cleanedData = JSON.parse(cleanedJsonString);
+          
+      setItemData(cleanedData);
 
       if (!response.ok) {
         throw new Error('Failed to retrieve item data');
