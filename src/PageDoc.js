@@ -14,8 +14,8 @@ const PageDoc = () => {
         <li>Development Phase</li>
         <li>Publication phase</li>
       </ul>
-      <p>The full details about each phase is located in the above quip. 
-        The following sections are simply an overview of each phase and how to use this app during each phase.</p>
+      <p>The full details about each phase are located in the above document. 
+        The following sections describe how to use this app during each phase for tracking purposes.</p>
       
       <h3>Research  Phase</h3>
       <p>Enter the Getting Started details in the <i>Enter Getting Started Details</i> section of this application. 
