@@ -4,8 +4,7 @@ const PageDoc = () => {
   return (
     <div>
       <h1>Getting Started Scenario Process</h1>
-      <h5>This application tracks Getting Started Scenario items through these states: Draft, Approved, Research, InProgress, and Done. 
-        Getting Started scenario guidelines and the development process are defined here: <a href="https://quip-amazon.com/FhZaAaKOSAIf/AWS-Getting-Started-Scenarios-Guidelines" target="_blank" rel="noopener noreferrer">
+      <h5>Getting Started scenario guidelines and the development process are defined here: <a href="https://quip-amazon.com/FhZaAaKOSAIf/AWS-Getting-Started-Scenarios-Guidelines" target="_blank" rel="noopener noreferrer">
         Guidelines for SDK  Getting Started scenarios.</a></h5>
       
 
