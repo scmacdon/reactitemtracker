@@ -278,8 +278,8 @@ const Candidate = () => {
           />
         </div>
       )}
-      <h1>Getting Started Candidate Details</h1>
-      <p>At this stage, the status of all Getting Started items can be <b>Approved</b>, <b>Research</b>, <b>InProgress</b>, or <b>Done</b>.</p>
+      <h1>Development Phase items</h1>
+      <p>At this stage, the status of all Getting Started items can be <b>Approved</b>, <b>Research</b>, or <b>InProgress</b>.</p>
       <p>You can modify the status of an item by clicking the icon in the Action column.</p>
       <p>You can set the status from <b>Approved</b> to <b>Research</b> which means the item is still in the research mode. 
       When you are ready to work on the item, set it from <b>Research</b> to <b>InProgress</b>. While in this stage, 

@@ -234,7 +234,7 @@ const DraftComponent = () => {
         </div>
       )}
       <div className="content">
-        <h1 className="red-banner">Getting Started Draft Details</h1>
+        <h1 className="red-banner">Research Phase items</h1>
         <p className="description">
           Getting Started items with the status of <b>Draft</b> are displayed and can be either accepted or rejected.
         </p>
